@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 
 class CustomWidget extends StatefulWidget {
@@ -11,6 +9,7 @@ class CustomWidget extends StatefulWidget {
 }
 
 class _CustomWidgetState extends State<CustomWidget> {
+  Overlay? floatingDowndrop;
   late GlobalKey actionKey;
   bool isDropdownOpen = false;
   late double height, width, xPosition, yPosition;
@@ -33,9 +32,18 @@ class _CustomWidgetState extends State<CustomWidget> {
 
   OverlayEntry _createFloatingDropdown() {
     return OverlayEntry(builder: (context) {
-      return Container(
-        color: Colors.pink,
-        height: 350,
+      return Positioned(
+        left: xPosition + 20,
+        width: width - 20,
+        top: yPosition + height,
+        height: 4 * height + 30,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.blueGrey,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 350,
+        ),
       );
     });
   }
@@ -48,13 +56,13 @@ class _CustomWidgetState extends State<CustomWidget> {
         setState(() {
           isDropdownOpen = !isDropdownOpen;
           findDropdownData();
-          OverlayEntry floatingdownDrop = _createFloatingDropdown();
-          Overlay.of(context)?.insert(floatingdownDrop);
+          OverlayEntry floatingDowndrop = _createFloatingDropdown();
+          Overlay.of(context)?.insert(floatingDowndrop);
         });
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blueGrey,
+          color: Colors.cyan,
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Padding(
@@ -63,7 +71,8 @@ class _CustomWidgetState extends State<CustomWidget> {
             children: [
               Text(
                 widget.text!.toUpperCase(),
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.white),
               ),
               Spacer(),
               Icon(Icons.arrow_drop_down)
@@ -74,7 +83,5 @@ class _CustomWidgetState extends State<CustomWidget> {
     );
   }
 }
-
-
 
 // Contact Personal Name, Destination, Phone Number, Email Address, Alternative Email Address

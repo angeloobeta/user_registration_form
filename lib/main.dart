@@ -26,11 +26,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const Scaffold(
-          body: Padding(
-              padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-              child: CustomWidget(
-                text: "Nothing  Contact Details",
-              ))),
+          body: SafeArea(
+        child: Padding(
+            padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+            child: CustomWidget(
+              text: "Contact Details",
+            )),
+      )),
     );
   }
 }
