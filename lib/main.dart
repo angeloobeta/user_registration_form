@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:expandable_tree_menu/expandable_tree_menu.dart';
-import 'package:user_registration_form/screens/home_screen.dart';
-import 'package:user_registration_form/screens/registration_screen.dart';
-import 'package:user_registration_form/user_registration/contact_details.dart';
+import 'package:user_registration_form/user_registration/registration_screen.dart';
 
 void main() {
   runApp(const MyApp());
