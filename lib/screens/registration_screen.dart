@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable_tree_menu/expandable_tree_menu.dart';
 
@@ -13,45 +14,62 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        buildCard("Contacts Details", ["Address", "Phone Number"])
+        section("Contacts Details", [
+          'Name',
+          'Destination',
+          'Phone Number',
+          'Alternative Number',
+          'Email',
+          'Alternative Email'
+        ]),
+        section("Additional Contacts Details", [
+          'Name',
+          'Destination',
+          'Phone Number',
+          'Alternative Number',
+          'Email',
+          'Alternative Email'
+        ]),
+        section("Business Details", ['Business Name', 'Location', 'Website'])
       ],
     );
   }
 }
 
-Widget buildCard(String heading, List<String> property) {
-  return Padding(
-      padding: EdgeInsets.all(10),
-      child: Card(
-        child: ExpandableTree(
-          nodes: [
-            TreeNode<Widget>(
-              text("Contacts"),
-              subNodes: [
-                TreeNode<Widget>(text("Contacts")),
-                TreeNode<Widget>(text("Contacts")),
-              ],
-            ),
-            TreeNode(
-              'Category B',
-              subNodes: [
-                TreeNode('Cat B first item'),
-                TreeNode(
-                  'Cat B sub-category 1',
-                ),
-              ],
-            ),
-          ],
-          nodeBuilder: (context, nodeValue) => Card(
-            child: Text(nodeValue.toString()),
-          ),
+Widget section(String text, List<String> details) {
+  return Container(
+    padding: EdgeInsets.all(10),
+    child: Card(
+      color: Colors.cyan,
+      child: ExpandablePanel(
+        header: Text(
+          text,
+          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
-      ));
+        expanded: const Text('Please tap fill'),
+        collapsed: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: details.map((e) => body(e)).toList()),
+      ),
+    ),
+  );
 }
 
-Widget text(String text) {
-  return Text(
-    text,
-    style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
+Widget body(String text) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+      decoration: BoxDecoration(
+          color: Colors.white70,
+          border: Border.all(color: Colors.black, style: BorderStyle.solid),
+          borderRadius: BorderRadius.circular(10)),
+      child: TextField(
+        textAlign: TextAlign.center,
+        decoration: InputDecoration(
+            border: InputBorder.none,
+            // labelText: 'Enter Name',
+            hintText: 'Enter Your $text'),
+      ),
+    ),
   );
 }
