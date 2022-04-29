@@ -9,9 +9,9 @@ class CustomWidget extends StatefulWidget {
 }
 
 class _CustomWidgetState extends State<CustomWidget> {
-  Overlay? floatingDowndrop;
+  OverlayEntry? floatingDropdown;
   late GlobalKey actionKey;
-  bool isDropdownOpen = false;
+  bool isDropdownOpen = true;
   late double height, width, xPosition, yPosition;
 
   @override
@@ -19,6 +19,12 @@ class _CustomWidgetState extends State<CustomWidget> {
     actionKey = LabeledGlobalKey(widget.text);
     super.initState();
   }
+
+  // @override
+  // void dispose() {
+  //   floatingDropdown?.remove();
+  //   super.dispose();
+  // }
 
   void findDropdownData() {
     RenderBox renderBox =
@@ -33,18 +39,29 @@ class _CustomWidgetState extends State<CustomWidget> {
   OverlayEntry _createFloatingDropdown() {
     return OverlayEntry(builder: (context) {
       return Positioned(
-        left: xPosition + 20,
-        width: width - 20,
-        top: yPosition + height,
-        height: 4 * height + 30,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.blueGrey,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          height: 350,
-        ),
-      );
+          left: xPosition + 20,
+          width: width - 20,
+          top: yPosition + height,
+          height: 4 * height + 30,
+          child: Container(
+            color: Colors.amber,
+            height: 200,
+          )
+          // DropDown(),
+          );
+    });
+  }
+
+  void onTap() {
+    setState(() {
+      if (isDropdownOpen) {
+        floatingDropdown?.dispose();
+      } else {
+        findDropdownData();
+        OverlayEntry floatingDropdown = _createFloatingDropdown();
+        Overlay.of(context)?.insert(floatingDropdown);
+      }
+      isDropdownOpen = !isDropdownOpen;
     });
   }
 
@@ -52,14 +69,7 @@ class _CustomWidgetState extends State<CustomWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       key: actionKey,
-      onTap: () {
-        setState(() {
-          isDropdownOpen = !isDropdownOpen;
-          findDropdownData();
-          OverlayEntry floatingDowndrop = _createFloatingDropdown();
-          Overlay.of(context)?.insert(floatingDowndrop);
-        });
-      },
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.cyan,
@@ -85,3 +95,64 @@ class _CustomWidgetState extends State<CustomWidget> {
 }
 
 // Contact Personal Name, Destination, Phone Number, Email Address, Alternative Email Address
+
+class DropDown extends StatelessWidget {
+  late double itemHeight;
+  late String? text;
+  late IconData? iconData;
+  late bool? isSelected;
+  DropDown({Key? key, this.text, this.iconData, this.isSelected})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        Align(
+          alignment: const Alignment(-0.85, 0),
+          child: ClipPath(
+            clipper: ArrowClipper(),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(children: [
+                    Text(
+                      text!.toUpperCase(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    const Spacer(),
+                    Icon(iconData)
+                  ])),
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.cyan, borderRadius: BorderRadius.circular(10.0)),
+          child: Column(
+            children: [],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class ArrowClipper extends CustomClipper<Path> {
+  @override
+  getClip(Size size) {
+    Path path = Path();
+    path.moveTo(0, size.height);
+    path.lineTo(size.width / 2, 0);
+    path.lineTo(size.width, size.height);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+}

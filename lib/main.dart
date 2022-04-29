@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       home: const Scaffold(
           body: SafeArea(
         child: Padding(
-            padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+            padding: EdgeInsets.only(top: 20, left: 20, right: 20),
             child: CustomWidget(
               text: "Contact Details",
             )),
