@@ -11,7 +11,7 @@ class CustomWidget extends StatefulWidget {
 class _CustomWidgetState extends State<CustomWidget> {
   OverlayEntry? floatingDropdown;
   late GlobalKey actionKey;
-  bool isDropdownOpen = true;
+  bool isDropdownOpen = false;
   late double height, width, xPosition, yPosition;
 
   @override
@@ -67,6 +67,7 @@ class _CustomWidgetState extends State<CustomWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print('the value is $isDropdownOpen');
     return GestureDetector(
       key: actionKey,
       onTap: onTap,
@@ -85,7 +86,8 @@ class _CustomWidgetState extends State<CustomWidget> {
                     fontWeight: FontWeight.bold, color: Colors.white),
               ),
               Spacer(),
-              Icon(Icons.arrow_drop_down)
+              Icon(
+                  isDropdownOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down),
             ],
           ),
         ),
